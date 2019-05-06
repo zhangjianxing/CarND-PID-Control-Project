@@ -9,7 +9,7 @@ return total_error;
 ```
 
 ### Describe the effect each of the P, I, D components had in your implementation.
-I store tau_p, tau_i, tau_d in  `ector<double> p` in my PID class.
+I store tau_p, tau_i, tau_d in  `vector<double> p` in my PID class.
 Each iteration, I record PID by new cte.
 ```c++
 void PID::UpdateError(double cte) {
@@ -19,6 +19,22 @@ void PID::UpdateError(double cte) {
     twiddle_error += cte*cte;
 }
 ``` 
+![](https://wikimedia.org/api/rest_v1/media/math/render/svg/cd581e5c8539ce46453574d1188bd9d52a610fe0)
+
+The PID control scheme is named after its three correcting terms, 
+whose sum constitutes the manipulated variable (MV). 
+The proportional ( `e(t)` or `p_error`), integral(`d e(t)/dt` or `d_error`), 
+and derivative terms(`i_error`) are summed to calculate the output of the PID 
+controller. 
+
+We need to choose proper `tau_p, tau_i, tau_d` to fit this equation. So that 
+our car can drive on target trajectory with low bouncing rate. And because we
+have little drifting rate. We cannot 100% relay on our output steering angle.
+That is why we need to train parameters to control our car drive on target
+trajectory. 
+
+I finally choose tau_p = .2, tau_i = 1e-4, tau_d = 3.0.
+
 
 ### Describe how the final hyperparameters were chosen.
 
